@@ -1,9 +1,5 @@
-# Bypass Corepack — Node 22 / 24's bundled Corepack hits
-# ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING when loading pnpm 11.x's bin script.
-# We install pnpm via npm (which doesn't go through Corepack) and use it directly.
-
-[phases.setup]
-nixPkgs = ["nodejs_22", "npm-10_x"]
+# Override only install + build. Let Nixpacks auto-set up Node from
+# engines.node ("22.x") and .nvmrc. Skip Corepack: install pnpm via npm.
 
 [phases.install]
 cmds = [
