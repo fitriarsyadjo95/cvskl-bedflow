@@ -1,21 +1,17 @@
-providers = ["node"]
+# Bypass Corepack — Node 22 / 24's bundled Corepack hits
+# ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING when loading pnpm 11.x's bin script.
+# We install pnpm via npm (which doesn't go through Corepack) and use it directly.
 
 [phases.setup]
-nixPkgs = ["nodejs_22"]
+nixPkgs = ["nodejs_22", "npm-10_x"]
 
 [phases.install]
-dependsOn = ["setup"]
-# Bypass Corepack entirely — Node 22's bundled Corepack has a known
-# ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING bug when loading pnpm 11.x's CJS
-# bin script. Install pnpm globally via npm instead, which sidesteps Corepack
-# completely.
 cmds = [
   "npm install -g pnpm@11.1.3",
-  "pnpm install --frozen-lockfile",
+  "pnpm install --frozen-lockfile"
 ]
 
 [phases.build]
-dependsOn = ["install"]
 cmds = ["pnpm build"]
 
 [start]
